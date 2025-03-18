@@ -280,7 +280,7 @@ static attach_state_t ptrace_attach(pid_t pid, char* err_buf, size_t err_buf_len
     // GNU-specific:  char *strerror_r(int errnum, char *buf, size_t buflen);
     // XSI-compliant: int   strerror_r(int errnum, char *buf, size_t buflen);
     char buf[200];
-#if defined(__GLIBC__) && defined(_GNU_SOURCE)
+#if (defined(__GLIBC__) && defined(_GNU_SOURCE)) || defined(__ANDROID__)
     char* msg = strerror_r(errno, buf, sizeof(buf));
 #else
     int rc = strerror_r(errno, buf, sizeof(buf));

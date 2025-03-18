@@ -24,7 +24,9 @@
 
 #ifndef SHARE_UTILITIES_ELFFILE_HPP
 #define SHARE_UTILITIES_ELFFILE_HPP
-
+#ifdef __ANDROID__
+#include <linux/elf.h>
+#endif
 #if !defined(_WINDOWS) && !defined(__APPLE__) && !defined(_AIX)
 
 #if defined(__OpenBSD__)
@@ -45,9 +47,10 @@ typedef Elf64_Ehdr      Elf_Ehdr;
 typedef Elf64_Shdr      Elf_Shdr;
 typedef Elf64_Phdr      Elf_Phdr;
 typedef Elf64_Sym       Elf_Sym;
-
+#ifndef ELF_ST_TYPE
 #if !defined(_ALLBSD_SOURCE) || defined(__APPLE__)
 #define ELF_ST_TYPE ELF64_ST_TYPE
+#endif
 #endif
 
 #else

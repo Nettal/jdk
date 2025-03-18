@@ -668,6 +668,10 @@ void os::init_system_properties_values() {
 // detecting pthread library
 
 void os::Linux::libpthread_init() {
+#ifdef __ANDROID__
+    os::Linux::set_libc_version("bionic - unknown");
+    os::Linux::set_libpthread_version("bionic - unknown");
+#else
   // Save glibc and pthread version strings.
 #if !defined(_CS_GNU_LIBC_VERSION) || \
     !defined(_CS_GNU_LIBPTHREAD_VERSION)
@@ -691,6 +695,7 @@ void os::Linux::libpthread_init() {
   str = (char *)malloc(n, mtInternal);
   confstr(_CS_GNU_LIBPTHREAD_VERSION, str, n);
   os::Linux::set_libpthread_version(str);
+#endif
 #endif
 }
 
@@ -1997,11 +2002,18 @@ const char* os::Linux::dll_path(void* lib) {
   struct link_map *lmap;
   const char* l_path = nullptr;
   assert(lib != nullptr, "dll_path parameter must not be null");
-
+#ifdef __ANDROID_API__
+  Dl_info info;
+  int res_dli = ::dladdr(lib, &info);
+  if (res_dli != 0) {
+    l_path = info.dli_fname;
+  }
+#else
   int res_dli = ::dlinfo(lib, RTLD_DI_LINKMAP, &lmap);
   if (res_dli == 0) {
     l_path = lmap->l_name;
   }
+#endif
   return l_path;
 }
 
@@ -3232,6 +3244,9 @@ static bool numa_syscall_check() {
 }
 
 bool os::Linux::libnuma_init() {
+#ifdef __ANDROID__
+    return false;
+#endif
   // Requires sched_getcpu() and numa dependent syscalls support
   if ((sched_getcpu() != -1) && numa_syscall_check()) {
     void *handle = dlopen("libnuma.so.1", RTLD_LAZY);
@@ -5197,7 +5212,11 @@ bool os::is_thread_cpu_time_supported() {
 // Linux doesn't yet have a (official) notion of processor sets,
 // so just return the system wide load average.
 int os::loadavg(double loadavg[], int nelem) {
+#ifdef __ANDROID_API__
+    return -1;
+#else
   return ::getloadavg(loadavg, nelem);
+#endif
 }
 
 // Get the default path to the core file

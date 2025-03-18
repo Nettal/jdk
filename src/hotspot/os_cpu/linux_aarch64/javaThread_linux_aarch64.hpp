@@ -47,6 +47,8 @@ private:
   bool pd_get_top_frame(frame* fr_addr, void* ucontext, bool isInJava);
 public:
 
-  static Thread *aarch64_get_thread_helper();
+  static Thread *aarch64_get_thread_helper(){
+      return Thread::current();
+  }
 
 #endif // OS_CPU_LINUX_AARCH64_JAVATHREAD_LINUX_AARCH64_HPP

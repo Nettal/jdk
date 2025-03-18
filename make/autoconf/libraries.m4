@@ -148,7 +148,7 @@ AC_DEFUN_ONCE([LIB_SETUP_LIBRARIES],
     # But once our supported minimum build and runtime platform
     # has glibc 2.17, this can be removed as the functions are
     # in libc.
-    BASIC_JVM_LIBS="$BASIC_JVM_LIBS -lrt"
+    BASIC_JVM_LIBS="$BASIC_JVM_LIBS"
   fi
 
   # perfstat lib
@@ -199,7 +199,7 @@ AC_DEFUN_ONCE([LIB_SETUP_MISC_LIBS],
 
   # Setup posix pthread support
   if test "x$OPENJDK_TARGET_OS" != "xwindows"; then
-    LIBPTHREAD="-lpthread"
+    LIBPTHREAD=""
   else
     LIBPTHREAD=""
   fi

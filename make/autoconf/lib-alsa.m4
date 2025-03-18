@@ -52,7 +52,7 @@ AC_DEFUN_ONCE([LIB_SETUP_ALSA],
     fi
 
     if test "x${with_alsa}" != x; then
-      ALSA_LIBS="-L${with_alsa}/lib -lasound"
+      ALSA_LIBS="-L${with_alsa}/lib "
       ALSA_CFLAGS="-I${with_alsa}/include"
       ALSA_FOUND=yes
     fi
@@ -61,7 +61,7 @@ AC_DEFUN_ONCE([LIB_SETUP_ALSA],
       ALSA_FOUND=yes
     fi
     if test "x${with_alsa_lib}" != x; then
-      ALSA_LIBS="-L${with_alsa_lib} -lasound"
+      ALSA_LIBS="-L${with_alsa_lib} "
       ALSA_FOUND=yes
     fi
     # Do not try pkg-config if we have a sysroot set.
@@ -75,16 +75,16 @@ AC_DEFUN_ONCE([LIB_SETUP_ALSA],
       # look at known locations in sysroot.
       if test "x$SYSROOT" != "x" && test "x${with_alsa_lib}" == x; then
         if test -f "$SYSROOT/usr/lib64/libasound.so" && test "x$OPENJDK_TARGET_CPU_BITS" = x64; then
-          ALSA_LIBS="-L$SYSROOT/usr/lib64 -lasound"
+          ALSA_LIBS="-L$SYSROOT/usr/lib64 "
           ALSA_FOUND=yes
         elif test -f "$SYSROOT/usr/lib/libasound.so"; then
-          ALSA_LIBS="-L$SYSROOT/usr/lib -lasound"
+          ALSA_LIBS="-L$SYSROOT/usr/lib "
           ALSA_FOUND=yes
         elif test -f "$SYSROOT/usr/lib/$OPENJDK_TARGET_CPU-$OPENJDK_TARGET_OS-$OPENJDK_TARGET_ABI/libasound.so"; then
-          ALSA_LIBS="-L$SYSROOT/usr/lib/$OPENJDK_TARGET_CPU-$OPENJDK_TARGET_OS-$OPENJDK_TARGET_ABI -lasound"
+          ALSA_LIBS="-L$SYSROOT/usr/lib/$OPENJDK_TARGET_CPU-$OPENJDK_TARGET_OS-$OPENJDK_TARGET_ABI "
           ALSA_FOUND=yes
         elif test -f "$SYSROOT/usr/lib/$OPENJDK_TARGET_CPU_AUTOCONF-$OPENJDK_TARGET_OS-$OPENJDK_TARGET_ABI/libasound.so"; then
-          ALSA_LIBS="-L$SYSROOT/usr/lib/$OPENJDK_TARGET_CPU_AUTOCONF-$OPENJDK_TARGET_OS-$OPENJDK_TARGET_ABI -lasound"
+          ALSA_LIBS="-L$SYSROOT/usr/lib/$OPENJDK_TARGET_CPU_AUTOCONF-$OPENJDK_TARGET_OS-$OPENJDK_TARGET_ABI "
           ALSA_FOUND=yes
         fi
       fi
@@ -94,7 +94,7 @@ AC_DEFUN_ONCE([LIB_SETUP_ALSA],
           [
             ALSA_FOUND=yes
             ALSA_CFLAGS=-Iignoreme
-            ALSA_LIBS=-lasound
+            ALSA_LIBS=
             DEFAULT_ALSA=yes
           ],
           [ALSA_FOUND=no]

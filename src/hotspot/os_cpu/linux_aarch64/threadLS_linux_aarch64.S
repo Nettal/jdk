@@ -21,7 +21,7 @@
 // questions.
 
 #include "defs.S.inc"
-
+#ifndef __ANDROID__
         // JavaThread::aarch64_get_thread_helper()
         //
         // Return the current thread pointer in x0.
@@ -75,4 +75,5 @@ DECLARE_FUNC(_ZN10JavaThread25aarch64_get_thread_helperEv):
         .long   GNU_PROPERTY_AARCH64_FEATURE
         .long   0
         .popsection
+#endif
 #endif

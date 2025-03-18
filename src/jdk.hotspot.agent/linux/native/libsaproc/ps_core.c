@@ -35,6 +35,39 @@
 #include "proc_service.h"
 #include "salibelf.h"
 
+#ifdef __ANDROID_API__
+struct elf_prstatus {
+    struct elf_siginfo pr_info;
+    short pr_cursig;
+    unsigned long pr_sigpend;
+    unsigned long pr_sighold;
+    pid_t pr_pid;
+    pid_t pr_ppid;
+    pid_t pr_pgrp;
+    pid_t pr_sid;
+    struct timeval pr_utime;
+    struct timeval pr_stime;
+    struct timeval pr_cutime;
+    struct timeval pr_cstime;
+    elf_gregset_t pr_reg;
+    int pr_fpvalid;
+};
+struct elf_prpsinfo {
+    char pr_state;
+    char pr_sname;
+    char pr_zomb;
+    char pr_nice;
+    unsigned long pr_flag;
+    __kernel_uid_t pr_uid;
+    __kernel_gid_t pr_gid;
+    pid_t pr_pid, pr_ppid, pr_pgrp, pr_sid;
+    char pr_fname[16];
+    char pr_psargs[ELF_PRARGSZ];
+};
+typedef struct elf_prstatus prstatus_t;
+typedef struct elf_prpsinfo prpsinfo_t;
+#define PRARGSZ ELF_PRARGSZ
+#endif
 // This file has the libproc implementation to read core files.
 // For live processes, refer to ps_proc.c. Portions of this is adapted
 // /modelled after Solaris libproc.so (in particular Pcore.c)
